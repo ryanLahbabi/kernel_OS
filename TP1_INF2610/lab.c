@@ -1,6 +1,6 @@
 /* INF2610 - TP1
-/ 2061606 : 
-/ 2071348 : 
+/ 2061606  
+/ 2071348 
 */
 #include <stdlib.h>
 #include <time.h>
@@ -8,28 +8,14 @@
 #include <sys/wait.h>
 #include <stdio.h> 
 #include <stdbool.h>
+#include <string.h>
+#include "lab.h"
 
-
-struct Wheel {
-    int id;
-    bool isRearWheel;
-};
-
-struct Wing {
-    int *id; 
-};
-
-struct Plane {
-    char *id; 
-    char planeType[10];
-    bool isAvailable;
-    struct Wheel *wheels; 
-    struct Wing *wings;   
-};
 
 struct Wheel* createWheels(int initialId) {
     int numberOfWheels = 7;
-    struct Wheel* wheels = malloc(numberOfWheels * sizeof(wheels));
+    struct Wheel* wheels = malloc(numberOfWheels * sizeof(struct Wheel));
+
 
     for (int i = 0; i < numberOfWheels; i++) {
         wheels[i].id = initialId + i;
@@ -37,6 +23,7 @@ struct Wheel* createWheels(int initialId) {
     }
     return wheels;
 }
+
 
 void populateWingAttributes(struct Wing *wing, int id) {
     for (int i = 8; i >= 0; --i) {
@@ -70,11 +57,65 @@ void createPlanes(struct Plane *planes, char *id, int numPlanes) {
 }
 
 
+void setAvailability(struct Plane *plane, bool isAvailablePlane) {
+    plane->isAvailable = isAvailablePlane;
+}
+
+void getAvailablePlanes(struct Plane *planes, int numPlanes) {
+    printf("Available planes:\n");
+    for (int i = 0; i < numPlanes; i++) {
+        if (planes[i].isAvailable) {
+            printf("Plane %s\n", planes[i].id);
+        }
+    }
+}
+
+void setPlaneType(struct Plane *plane){
+
+    int firstWingNumber =  plane->wings->id[0];
+
+    if(firstWingNumber>=0 && firstWingNumber<=2)
+        printf("Small\n");
+
+    else if(firstWingNumber >= 3 && firstWingNumber <= 6)
+        printf("Medium\n");
+
+    else if(firstWingNumber >= 7 && firstWingNumber <= 8)
+        printf("Large\n");
+}
+
+void getPlanesByType(struct Plane *planes, const char *planeType, int numberOfPlanes){
+    printf("The Plane's type is '%s':\n", planeType);
+    for (int i = 0; i < numberOfPlanes; i++) {
+        if (strcmp(planes[i].planeType, planeType) == 0) {
+            printf("Plane %d\n", i + 1);
+        }
+    }
+}
+
+
+/*Nous avons fais cette fonction afin d'assigner des types d'avions différents
+aux avions de notre instance à chaque fois que nous exécutons le code avec ./lab */
+
+void assignRandomPlaneTypes(struct Plane *planes, int numPlanes) {
+    const char *types[] = {"Small", "Medium", "Large"};
+    int numTypes = 3;
+
+    for (int i = 0; i < numPlanes; i++) {
+        int typeIndex = rand() % numTypes; 
+        strcpy(planes[i].planeType, types[typeIndex]);
+    }
+}
+
+
+
+
 
 int main(int argc, char** argv) {
+    srand(time(NULL));  
+
     printf("Hello\n");
-    /* Remove comment once the code is completed for the given section to test */
-    int id = 101;
+    int id = 1;
 
 
     /* PARTIE 2 - [10 points] */
@@ -82,16 +123,14 @@ int main(int argc, char** argv) {
     /* Create wheel - [2 points] */
     struct Wheel* wheels = createWheels(id);
 
-   for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 7; i++) {
         printf("Wheel %d: ID = %d, isRearWheel = %s\n", i + 1, wheels[i].id, wheels[i].isRearWheel ? "true" : "false");
-    }
+        }
 
 
     /* Create wing - [4 points] */
     
-    long longId = 123456;
-   // Wing[] wings;
-   
+    long longId = 123456;   
     struct Wing *wings = createWings(longId);
 
     for (int i = 0; i < 2; i++) {
@@ -110,39 +149,44 @@ int main(int argc, char** argv) {
     struct Plane* planes = malloc(sizeof(struct Plane) * numberOfPlanes);
     createPlanes(planes, planeName, 3);
 
-    printf("Wheel %d created with ID = %d\n", i, wheels[i].id);
-
-    if (wheels == NULL) {
-        printf("Memory allocation for wheels failed\n");
-        exit(1); 
-    }
-
-
-
-    
-
     /* PARTIE 3 - [6 points] */
 
+    assignRandomPlaneTypes(planes, numberOfPlanes);
+
+
     /* Set availabilities - [1 point] */
-    /*
-    Plane plane = planes[0];
-    setAvailability(plane, true);
-    */
+    
+    struct Plane plane = planes[0];
+    setAvailability(&plane, true);
+
 
     /* Get available planes - [1 point] */
-    /*
     getAvailablePlanes(planes, numberOfPlanes);
-    */
+    
 
     /* Classify planes - [2 points] */
-    /*
-    Plane plane = planes[1];
-    setPlaneType(plane);
-    */
+    planes[1].wings->id[0] = 8; // Pour tester le code 
+    struct Plane plane_wing = planes[1];
 
+    setPlaneType(&plane_wing);
+    
     /* Return type specific planes - [2 points] */
-    /*
+    for (int i = 0; i < numberOfPlanes; i++) {
+        setPlaneType(&planes[i]);
+        printf("Plane %d: Type = %s\n", i + 1, planes[i].planeType);
+    }
+
     char planeType[] = "Small";
-    getPlanesByType(planes, planeType,numberOfPlanes);
-    */
+
+
+    getPlanesByType(planes, planeType, numberOfPlanes);
+
+    for (int i = 0; i < numberOfPlanes; i++) {
+        free(planes[i].wings->id);
+        free(planes[i].wings);
+        free(planes[i].wheels);
+
+
+    }
+    free(planes);
 }
