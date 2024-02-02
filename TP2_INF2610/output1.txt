@@ -1,0 +1,87 @@
+1.1.1:
+
+Commande pwd :
+/Users/ryanlahbabi/Desktop/INF2610/TP2_H24
+
+Commande cd : Nous avons fais cd /Users/ryanlahbabi/Desktop/INF2610/TP2_H24 à partir de la racine de mon ordinateur et nous nous retrouvons dans le répertoire du tp.Makefile
+TP2_INF2610.pdf
+
+Commande ls  >> output1.txt:
+minisys.asm
+output1.txt
+output2.txt
+output3.txt
+output4.txt
+part1.c
+part2.c
+
+Commande ls | sort >> output1.txt:
+TP2_INF2610.pdf
+minisys.asm
+output1.txt
+output2.txt
+output3.txt
+output4.txt
+part1.c
+part2.c
+pwd
+
+Commmande echo "message1" >> output1.txt   
+message1
+
+Commmande echo "message1" >> output1.txt   
+uname >> output1.txt
+Darwin
+
+
+Commmande echo "message1" >> output1.txt   
+uname -s >> output1.txt
+Darwin
+
+Commmande echo "message1" >> output1.txt   
+uname -r >> output1.txt
+23.1.0
+
+Commmande echo "message1" >> output1.txt   
+uname -o >> output1.txt
+Darwin
+
+Commmande echo "message1" >> output1.txt   
+uname -m >> output1.txt
+x86_64
+
+
+
+1.1.2:
+Commande echo $PATH:
+/Users/ryanlahbabi/flutter/bin:
+/Users/ryanlahbabi/anaconda3/bin:
+/Users/ryanlahbabi/anaconda3/condabin:
+/Library/Frameworks/Python.framework/Versions/3.11/bin:
+/Library/Frameworks/Python.framework/Versions/3.9/bin:
+/usr/local/bin:/System/Cryptexes/App/usr/bin:
+/usr/bin:
+/bin:
+/usr/sbin:
+/sbin:
+/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:
+/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:
+/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:
+/Library/Apple/usr/bin
+
+Commande which sleep:
+/bin/sleep
+
+
+un chemin relatif au répertoire dans lequel se trouve l’exécutable sleep:
+sleep 1
+
+son chemin absolu:
+/bin/sleep 1 
+
+un chemin relatif au répertoire courant:
+../../../../../../bin/sleep 1
+
+Dormirpendantauplus1000secondes(sleep 1000)etinterrompreensuitelacommande(un arrêt forcé):
+sleep 1000
+^C
